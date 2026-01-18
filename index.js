@@ -4,8 +4,8 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 
 const allowedOrigins = [
-  'http://localhost:3000',                            // লোকাল ডেভেলপমেন্টের জন্য
-  'https://my-market-app-topaz.vercel.app',           // আপনার ভার্সেল ফ্রন্টেন্ড লিঙ্ক
+  'http://localhost:3000',
+  'https://my-market-app-topaz.vercel.app',
 ];
 
 const app = express();
