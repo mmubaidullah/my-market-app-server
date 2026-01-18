@@ -3,12 +3,26 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 
+const allowedOrigins = [
+  'http://localhost:3000',                            // লোকাল ডেভেলপমেন্টের জন্য
+  'https://my-market-app-topaz.vercel.app',           // আপনার ভার্সেল ফ্রন্টেন্ড লিঙ্ক
+];
+
 const app = express();
 
 // এটি অবশ্যই app.use(express.json()) এর আগে হতে হবে
 app.use(cors({
-  origin: 'http://localhost:3000', // তোমার ফ্রন্টেন্ড যদি ৩০০০ পোর্টে চলে
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+  origin: function (origin, callback) {
+    // origin খালি থাকলে (যেমন পোস্টম্যান বা মোবাইল অ্যাপ) এলাউ করবে
+    if (!origin) return callback(null, true);
+    
+    if (allowedOrigins.indexOf(origin) === -1) {
+      const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
+      return callback(new Error(msg), false);
+    }
+    return callback(null, true);
+  },
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
   credentials: true
 }));
 
